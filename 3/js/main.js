@@ -66,4 +66,5 @@ const createBookingAd = () => ({
 });
 
 const bookingAds = Array.from({length: 10}, createBookingAd);
-bookingAds();
+// eslint-disable-next-line no-console
+console.log(bookingAds);
