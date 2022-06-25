@@ -9,7 +9,7 @@ const cardTemplate = document.querySelector('#card')
 const mapCanvas = document.querySelector('#map-canvas');
 //mapCanvas.appendChild(cardTemplate);
 
-similarCard.forEach(({location, author, offer}) => {
+similarCard.forEach(({author, offer}) => {
   const cardElement = cardTemplate.cloneNode(true);
 
   cardElement.querySelector('.popup__title').textContent = offer.title;

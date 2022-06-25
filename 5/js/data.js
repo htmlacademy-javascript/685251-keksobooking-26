@@ -36,6 +36,4 @@ const createBookingAd = (item, index) => {
   };
 };
 
-const bookingAds = Array.from({length: 10}, createBookingAd);
-
 export {createBookingAd};
