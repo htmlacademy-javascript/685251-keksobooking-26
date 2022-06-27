@@ -28,6 +28,7 @@ function getShuffledRandomArray(array) { // получаем шафлленый 
   newArray = array.slice(x);
   return newArray;
 }
+
 export {getRandomArrayElement,
   getRandomPositiveInteger, getRandomPositiveFloat,
   getRandomElements, getShuffledRandomArray
