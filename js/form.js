@@ -11,7 +11,9 @@ const encodedTypes = {
   bungalow: 'Бунгало',
   hotel: 'Отель'
 };
-
+const SLIDER_MIN = 0;
+const SLIDER_MAX = 100000;
+const SLIDER_STEP = 100;
 const spawnCard = function (data) {
   const cardElement = cardTemplate.cloneNode(true);
   const popupTitle = cardElement.querySelector('.popup__title');
@@ -41,11 +43,11 @@ const spawnCard = function (data) {
 
 noUiSlider.create(sliderElement, {
   range: {
-    min: 0,
-    max: 100000,
+    min: SLIDER_MIN,
+    max: SLIDER_MAX,
   },
-  start: 0,
-  step: 100,
+  start: SLIDER_MIN,
+  step: SLIDER_STEP,
   connect: 'lower',
   format: {
     to: (value) => value.toFixed(0),
@@ -55,5 +57,9 @@ noUiSlider.create(sliderElement, {
 sliderElement.noUiSlider.on('update', () => {
   priceElement.value = sliderElement.noUiSlider.get();
 });
+const sliderReset = () => {
+  sliderElement.noUiSlider.reset();
+};
 
-export {cardTemplate, spawnCard};
+
+export {sliderReset,cardTemplate, spawnCard};

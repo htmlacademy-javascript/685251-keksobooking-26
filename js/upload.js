@@ -1,5 +1,5 @@
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-
+const IMG_WIDTH_HEIGHT = '70';
 const adForm = document.querySelector('.ad-form');
 const avatarPreview = adForm.querySelector('.ad-form-header__preview img');
 const avatarPreviewDefaultSrc = avatarPreview.src;
@@ -28,8 +28,8 @@ const onPhotoUpdate = () => {
     const isValidType = FILE_TYPES.some((type) => fileName.endsWith(type));
 
     if (isValidType) {
-      imgEl.width = '70';
-      imgEl.height = '70';
+      imgEl.width = IMG_WIDTH_HEIGHT;
+      imgEl.height = IMG_WIDTH_HEIGHT;
       imgEl.src = URL.createObjectURL(file);
       imgEl.alt = 'Фотография жилья';
 

@@ -11,20 +11,14 @@ const setData = (element, valueToCheck, elementProperty = 'textContent', content
   }
 };
 
-function changeState(state) {
+function changeState(isDisabled) {
   const adForm = document.querySelector('.ad-form');
   const mapFilters = document.querySelector('.map__filters');
-  if (state === 0) {
-    adForm.classList.add('ad-form--disabled');
-    adForm.setAttribute('disabled', 'disabled');
-    mapFilters.classList.add('map__filters--disabled');
-    mapFilters.setAttribute('disabled', 'disabled');
-  }  else if (state === 1) {
-    adForm.classList.remove('ad-form--disabled');
-    adForm.removeAttribute('disabled');
-    mapFilters.classList.remove('map__filters--disabled');
-    mapFilters.removeAttribute('disabled');
-  }}
+  adForm.classList.toggle('ad-form--disabled', !isDisabled);
+  adForm.toggleAttribute('disabled', !isDisabled);
+  mapFilters.classList.toggle('ad-form--disabled', !isDisabled);
+  mapFilters.toggleAttribute('disabled', !isDisabled);
+}
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
@@ -36,7 +30,7 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать';
 };
 
-const getFetchError = (message) => {
+function getFetchError (message) {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
   alertContainer.style.position = 'absolute';
@@ -55,7 +49,7 @@ const getFetchError = (message) => {
   setTimeout(() => {
     alertContainer.remove();
   }, ALERT_SHOW_TIME);
-};
+}
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
 const successTemplate = document.querySelector('#success')
@@ -68,6 +62,7 @@ const errorTemplate = document.querySelector('#error')
 
 const getErrorMessage = () => {
   document.body.appendChild(errorTemplate);
+  unblockSubmitButton();
   document.addEventListener('keydown', onErrorEscPress);
   errorTemplate.addEventListener('click', onErrorClickPress);
 };
@@ -108,6 +103,7 @@ const getSuccessMessage = () => {
   document.body.appendChild(successTemplate);
   resetForm();
   resetAllPreviews();
+  unblockSubmitButton();
   document.addEventListener('keydown', onSuccessEscPress);
   successTemplate.addEventListener('click', onSuccessClickPress);
 };
@@ -156,4 +152,3 @@ export {changeState,
   unblockSubmitButton, getFetchError,
   getErrorMessage, getSuccessMessage,
   updatePhotos, sortFeatures, debounce};
-

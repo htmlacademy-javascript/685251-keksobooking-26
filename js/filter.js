@@ -6,7 +6,11 @@ const PricePoint = {
 };
 
 const filters = document.querySelector('.map__filters');
-let typeFilter, priceFilter, roomsFilter, guestsFilter, features;
+const typeFilter = filters.querySelector('#housing-type');
+const priceFilter = filters.querySelector('#housing-price');
+const roomsFilter = filters.querySelector('#housing-rooms');
+const guestsFilter = filters.querySelector('#housing-guests');
+const features = [...filters.querySelectorAll('#housing-features input')];
 
 const filterByType = (el) => typeFilter.value === DEFAULT_SELECT_VALUE
   || el.offer.type === typeFilter.value;
@@ -53,11 +57,6 @@ const initFilters = (offers, cb) => {
   if (!filters) {
     return;
   }
-  typeFilter = filters.querySelector('#housing-type');
-  priceFilter = filters.querySelector('#housing-price');
-  roomsFilter = filters.querySelector('#housing-rooms');
-  guestsFilter = filters.querySelector('#housing-guests');
-  features = [...filters.querySelectorAll('#housing-features input')];
 
   const onFiltersChange = (data) => () => {
     const filteredOffers = data.filter(filterOffers);

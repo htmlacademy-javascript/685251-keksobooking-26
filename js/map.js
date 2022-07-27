@@ -1,13 +1,13 @@
-import {changeState} from './util.js';
-import {spawnCard} from './form.js';
+import {changeState, getFetchError} from './util.js';
+import {sliderReset, spawnCard} from './form.js';
 import {initFilters} from './filter.js';
+import { getData } from './api.js';
 
 const MAX_BOOKING_ADDS = 10;
 const TOKYO_LAT = 35.652832, TOKYO_LNG = 139.839478;
 const ICON_SIZE = 52, BOOKING_ICON_SIZE = 40;
 const addressField = document.querySelector('#address');
 addressField.value = `${TOKYO_LAT} ${TOKYO_LNG}`;
-// LEAFLET
 const map = L.map('map-canvas').setView(
   {
     lat: TOKYO_LAT,
@@ -19,7 +19,7 @@ L.tileLayer(
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
 ).addTo(map);
-map.on('load', changeState(1));
+map.on('load', changeState(true), getData(onSuccessGetOffers, getFetchError));
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
   iconSize: [ICON_SIZE, ICON_SIZE],
@@ -80,11 +80,12 @@ function resetForm () {
   map.closePopup();
   marker.setLatLng({lat:TOKYO_LAT, lng:TOKYO_LNG});
   addressField.value = `${TOKYO_LAT.toFixed(5)} ${TOKYO_LNG.toFixed(5)}`;
+  sliderReset();
 }
 
-const onSuccessGetOffers = (offers) => {
+function onSuccessGetOffers (offers)  {
   renderAdds(offers);
   initFilters(offers, renderAdds);
-};
+}
 
 export {onSuccessGetOffers,renderAdds,resetForm, clearMarkers};

@@ -12,11 +12,11 @@ const capacityField = form.querySelector('#capacity');
 const checktimeField = form.querySelector('.ad-form__element--time');
 const timeSelectFields = checktimeField.querySelectorAll('select');
 const MinPriceMap = {
-  bungalow: 0,
-  flat: 1000,
-  hotel: 3000,
-  house: 5000,
-  palace: 10000,
+  BUNGALOW: 0,
+  FLAT: 1000,
+  HOTEL: 3000,
+  HOUSE: 5000,
+  PALACE: 10000,
 };
 const RoomsCapacityMap = {
   1: ['1'],
@@ -30,15 +30,15 @@ const pristine = new Pristine(form, {
   errorTextClass: 'ad-form__error_text',
 });
 const validateTitle = (value) => value.length >= MIN_TITLE && value.length <= MAX_TITLE;
-const validatePrice = (value) => value >= MinPriceMap[typeField.value] && value <= MAX_PRICE;
-const getPriceFieldError = () => `укажите цену от ${  MinPriceMap[typeField.value]} до ${MAX_PRICE}`;
+const validatePrice = (value) => value >= MinPriceMap[typeField.value.toUpperCase()] && value <= MAX_PRICE;
+const getPriceFieldError = () => `укажите цену от ${  MinPriceMap[typeField.value.toUpperCase()]} до ${MAX_PRICE}`;
 const validateGuestCapacity = () => {
   const check = RoomsCapacityMap[roomsField.value];
   return check.includes(capacityField.value);
 };
 const validateAddress = (value) => value.length > 0;
 
-pristine.addValidator(form.querySelector('#title'), validateTitle, `От ${MIN_TITLE} до ${MAX_TITLE} символов`);
+pristine.addValidator(form.querySelector('#title'), validateTitle, `Обязательное поле, от ${MIN_TITLE} до ${MAX_TITLE} символов`);
 pristine.addValidator(priceField, validatePrice, getPriceFieldError);
 pristine.addValidator(capacityField, validateGuestCapacity,
   'Гостей слишком много для такого количества комнат');
@@ -51,7 +51,6 @@ form.addEventListener('submit', (evt) => {
   blockSubmitButton();
   if (isValid) {
     sendData(getSuccessMessage,getErrorMessage,formData);
-    unblockSubmitButton();
   } else {
     unblockSubmitButton();
   }
@@ -65,7 +64,7 @@ formReset.addEventListener('click', (evt) => {
 });
 
 typeField.addEventListener('change', () => {
-  priceField.placeholder = MinPriceMap[typeField.value];
+  priceField.placeholder = MinPriceMap[typeField.value.toUpperCase()];
 } );
 
 checktimeField.addEventListener('change', (evt) => {
