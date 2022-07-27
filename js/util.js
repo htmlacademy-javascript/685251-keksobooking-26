@@ -11,13 +11,13 @@ const setData = (element, valueToCheck, elementProperty = 'textContent', content
   }
 };
 
-function changeState(isDisabled) {
+function togglePageState(isDisabled) {
   const adForm = document.querySelector('.ad-form');
   const mapFilters = document.querySelector('.map__filters');
-  adForm.classList.toggle('ad-form--disabled', !isDisabled);
-  adForm.toggleAttribute('disabled', !isDisabled);
-  mapFilters.classList.toggle('ad-form--disabled', !isDisabled);
-  mapFilters.toggleAttribute('disabled', !isDisabled);
+  adForm.classList.toggle('ad-form--disabled', isDisabled);
+  adForm.toggleAttribute('disabled', isDisabled);
+  mapFilters.classList.toggle('ad-form--disabled', isDisabled);
+  mapFilters.toggleAttribute('disabled', isDisabled);
 }
 
 const blockSubmitButton = () => {
@@ -147,7 +147,7 @@ const debounce = (cb, timeoutDelay = 500) => {
   };
 };
 
-export {changeState,
+export {togglePageState,
   setData, blockSubmitButton,
   unblockSubmitButton, getFetchError,
   getErrorMessage, getSuccessMessage,

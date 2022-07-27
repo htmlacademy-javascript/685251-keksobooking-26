@@ -1,13 +1,13 @@
-import {changeState, getFetchError} from './util.js';
+import {togglePageState, getFetchError} from './util.js';
 import {sliderReset, spawnCard} from './form.js';
 import {initFilters} from './filter.js';
-import { getData } from './api.js';
-
+import {getData} from './api.js';
 const MAX_BOOKING_ADDS = 10;
 const TOKYO_LAT = 35.652832, TOKYO_LNG = 139.839478;
 const ICON_SIZE = 52, BOOKING_ICON_SIZE = 40;
 const addressField = document.querySelector('#address');
 addressField.value = `${TOKYO_LAT} ${TOKYO_LNG}`;
+togglePageState(true);
 const map = L.map('map-canvas').setView(
   {
     lat: TOKYO_LAT,
@@ -19,7 +19,7 @@ L.tileLayer(
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
 ).addTo(map);
-map.on('load', changeState(true), getData(onSuccessGetOffers, getFetchError));
+map.on('load',togglePageState(false),getData(onSuccessGetOffers, getFetchError));
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
   iconSize: [ICON_SIZE, ICON_SIZE],
