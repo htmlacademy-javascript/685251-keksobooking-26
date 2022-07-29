@@ -17,28 +17,28 @@ import {setData, sortFeatures, updatePhotos} from './util.js';
 
 const spawnCard = (data) => {
   const cardElement = cardTemplateElement.cloneNode(true);
-  const popupTitle = cardElement.querySelector('.popup__title');
-  const popupTextAdress = cardElement.querySelector('.popup__text--address');
-  const popupTextPrice = cardElement.querySelector('.popup__text--price');
-  const popupType = cardElement.querySelector('.popup__type');
-  const popupText = cardElement.querySelector('.popup__text--capacity');
-  const popupTextTime = cardElement.querySelector('.popup__text--time');
-  const popupDescription = cardElement.querySelector('.popup__description');
-  const popupPhotos = cardElement.querySelector('.popup__photos');
-  const popupAvatar = cardElement.querySelector('.popup__avatar');
-  const popupFeatures = cardElement.querySelector('.popup__features')
+  const popupTitleElement = cardElement.querySelector('.popup__title');
+  const popupTextAdressElement = cardElement.querySelector('.popup__text--address');
+  const popupTextPriceElement = cardElement.querySelector('.popup__text--price');
+  const popupTypeElement = cardElement.querySelector('.popup__type');
+  const popupTextElement = cardElement.querySelector('.popup__text--capacity');
+  const popupTextTimeElement = cardElement.querySelector('.popup__text--time');
+  const popupDescriptionElement = cardElement.querySelector('.popup__description');
+  const popupPhotosElement = cardElement.querySelector('.popup__photos');
+  const popupAvatarElement = cardElement.querySelector('.popup__avatar');
+  const popupFeaturesElement = cardElement.querySelector('.popup__features')
     .querySelectorAll('.popup__feature');
 
-  sortFeatures(popupFeatures, data);
-  updatePhotos(popupPhotos, data.offer.photos);
-  setData(popupTitle, data.offer.title, 'textContent');
-  setData(popupTextAdress, data.offer.address, 'textContent');
-  setData(popupType, encodedTypes[data.offer.type], 'textContent');
-  setData(popupTextPrice, `${data.offer.price  }₽/ночь`, 'textContent');
-  setData(popupDescription, data.offer.description, 'textContent');
-  setData(popupAvatar, data.author.avatar, 'src');
-  setData(popupText, [data.offer.rooms, data.offer.guests], 'textContent', `${data.offer.rooms} комнаты для ${data.offer.guests} гостей`);
-  setData(popupTextTime,[data.offer.checkin, data.offer.checkout], 'textContent', `Заезд после ${data.offer.checkin}, выезд до ${data.offer.checkout}`);
+  sortFeatures(popupFeaturesElement, data);
+  updatePhotos(popupPhotosElement, data.offer.photos);
+  setData(popupTitleElement, data.offer.title, 'textContent');
+  setData(popupTextAdressElement, data.offer.address, 'textContent');
+  setData(popupTypeElement, encodedTypes[data.offer.type], 'textContent');
+  setData(popupTextPriceElement, `${data.offer.price  }₽/ночь`, 'textContent');
+  setData(popupDescriptionElement, data.offer.description, 'textContent');
+  setData(popupAvatarElement, data.author.avatar, 'src');
+  setData(popupTextElement, [data.offer.rooms, data.offer.guests], 'textContent', `${data.offer.rooms} комнаты для ${data.offer.guests} гостей`);
+  setData(popupTextTimeElement,[data.offer.checkin, data.offer.checkout], 'textContent', `Заезд после ${data.offer.checkin}, выезд до ${data.offer.checkout}`);
   return cardElement;
 };
 
