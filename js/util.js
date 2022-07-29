@@ -1,8 +1,16 @@
+const submitButtonElement = document.querySelector('.ad-form__submit');
+const ALERT_SHOW_TIME = 10000;
+const PHOTO_WIDTH = 45;
+const PHOTO_HEIGHT = 40;
+const DELAY = 500;
+const successTemplateElement = document.querySelector('#success')
+  .content
+  .querySelector('.success');
+const errorTemplateElement = document.querySelector('#error')
+  .content
+  .querySelector('.error');
 import { resetForm } from './map.js';
 import { resetAllPreviews } from './upload.js';
-const submitButton = document.querySelector('.ad-form__submit');
-const ALERT_SHOW_TIME = 10000;
-
 const setData = (element, valueToCheck, elementProperty = 'textContent', content) => {
   if (valueToCheck === undefined || valueToCheck.includes(undefined)) {
     element.classList.add('hidden');
@@ -12,25 +20,22 @@ const setData = (element, valueToCheck, elementProperty = 'textContent', content
 };
 
 function togglePageState(isDisabled) {
-  const adForm = document.querySelector('.ad-form');
-  const mapFilters = document.querySelector('.map__filters');
-  adForm.classList.toggle('ad-form--disabled', isDisabled);
-  adForm.toggleAttribute('disabled', isDisabled);
-  mapFilters.classList.toggle('ad-form--disabled', isDisabled);
-  mapFilters.toggleAttribute('disabled', isDisabled);
+  const adFormElement = document.querySelector('.ad-form');
+  const mapFiltersElement = document.querySelector('.map__filters');
+  adFormElement.classList.toggle('ad-form--disabled', isDisabled);
+  adFormElement.toggleAttribute('disabled', isDisabled);
+  mapFiltersElement.classList.toggle('ad-form--disabled', isDisabled);
+  mapFiltersElement.toggleAttribute('disabled', isDisabled);
 }
 
-const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = 'Публикуется..';
-};
-
-const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = 'Опубликовать';
-};
+function toggleFilterFields(isDisabled) {
+  const mapFiltersElement = document.querySelector('.map__filters');
+  mapFiltersElement.classList.toggle('ad-form--disabled', isDisabled);
+  mapFiltersElement.toggleAttribute('disabled', isDisabled);
+}
 
 function getFetchError (message) {
+  toggleFilterFields(true);
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
   alertContainer.style.position = 'absolute';
@@ -50,64 +55,67 @@ function getFetchError (message) {
     alertContainer.remove();
   }, ALERT_SHOW_TIME);
 }
-const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
-
-const successTemplate = document.querySelector('#success')
-  .content
-  .querySelector('.success');
-
-const errorTemplate = document.querySelector('#error')
-  .content
-  .querySelector('.error');
-
-const getErrorMessage = () => {
-  document.body.appendChild(errorTemplate);
-  unblockSubmitButton();
-  document.addEventListener('keydown', onErrorEscPress);
-  errorTemplate.addEventListener('click', onErrorClickPress);
+const blockSubmitButton = () => {
+  submitButtonElement.disabled = true;
+  submitButtonElement.textContent = 'Публикуется..';
 };
 
-function removeErrorMessage () {
-  errorTemplate.remove();
-  document.removeEventListener('keydown', onErrorEscPress);
-  errorTemplate.removeEventListener('click', onErrorClickPress);
-}
-function onErrorEscPress (evt) {
-  if (isEscEvent(evt)) {
-    evt.preventDefault();
-    removeErrorMessage();
-  }}
+const unblockSubmitButton = () => {
+  submitButtonElement.disabled = false;
+  submitButtonElement.textContent = 'Опубликовать';
+};
 
-function onErrorClickPress () {
-  removeErrorMessage();
-}
 
-function onSuccessEscPress (evt) {
+const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+
+const onSuccessEscPress = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
     removeSuccessMessage();
   }
-}
+};
 
-function removeSuccessMessage () {
-  successTemplate.remove();
-  document.removeEventListener('keydown', onSuccessEscPress);
-  successTemplate.removeEventListener('click', onSuccessClickPress);
-}
-
-function onSuccessClickPress () {
+const onSuccessClickPress = () => {
   removeSuccessMessage();
+};
+
+function removeSuccessMessage ()  {
+  successTemplateElement.remove();
+  document.removeEventListener('keydown', onSuccessEscPress);
+  successTemplateElement.removeEventListener('click', onSuccessClickPress);
 }
+const onErrorEscPress = (evt) => {
+  if (isEscEvent(evt)) {
+    evt.preventDefault();
+    removeErrorMessage();
+  }
+};
+
+const onErrorClickPress = () => {
+  removeErrorMessage();
+};
+
+function removeErrorMessage () {
+  errorTemplateElement.remove();
+  document.removeEventListener('keydown', onErrorEscPress);
+  errorTemplateElement.removeEventListener('click', onErrorClickPress);
+}
+
+const getErrorMessage = () => {
+  document.body.appendChild(errorTemplateElement);
+  unblockSubmitButton();
+  document.addEventListener('keydown', onErrorEscPress);
+  errorTemplateElement.addEventListener('click', onErrorClickPress);
+};
 
 const getSuccessMessage = () => {
-  document.body.appendChild(successTemplate);
+  document.body.appendChild(successTemplateElement);
   resetForm();
   resetAllPreviews();
   unblockSubmitButton();
   document.addEventListener('keydown', onSuccessEscPress);
-  successTemplate.addEventListener('click', onSuccessClickPress);
+  successTemplateElement.addEventListener('click', onSuccessClickPress);
 };
-
 
 const updatePhotos = (el, arr) => {
   if (arr && arr.length) {
@@ -115,8 +123,8 @@ const updatePhotos = (el, arr) => {
     arr.forEach((photo) => {
       const photoElement = document.createElement('img');
       photoElement.classList.add('popup__photo');
-      photoElement.width = '45';
-      photoElement.height = '40';
+      photoElement.width = PHOTO_HEIGHT;
+      photoElement.height = PHOTO_WIDTH;
       photoElement.alt = 'Фотография жилья';
       photoElement.src = photo;
       el.append(photoElement);
@@ -131,15 +139,13 @@ const sortFeatures = (features, data) => {
     if (data.offer.features !== undefined) {
       const modifiers = data.offer.features.map((feature) => `popup__feature--${  feature}`);
       const modifier = featureListItem.classList[1];
-      if (!modifiers.includes(modifier)) {
-        featureListItem.remove();
-      } else if (modifiers === undefined) {
+      if (!modifiers.includes(modifier) || modifiers === undefined) {
         featureListItem.remove();
       }
     }});
 };
 
-const debounce = (cb, timeoutDelay = 500) => {
+const debounce = (cb, timeoutDelay = DELAY) => {
   let timeoutID;
   return (...rest) => {
     clearTimeout(timeoutID);

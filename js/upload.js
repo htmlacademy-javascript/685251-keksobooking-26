@@ -1,20 +1,20 @@
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const IMG_WIDTH_HEIGHT = '70';
-const adForm = document.querySelector('.ad-form');
-const avatarPreview = adForm.querySelector('.ad-form-header__preview img');
-const avatarPreviewDefaultSrc = avatarPreview.src;
-const avatarChooser = adForm.querySelector('#avatar');
-const photoPreview = adForm.querySelector('.ad-form__photo');
-const photoChooser = adForm.querySelector('#images');
+const adFormElement = document.querySelector('.ad-form');
+const avatarPreviewElement = adFormElement.querySelector('.ad-form-header__preview img');
+const avatarPreviewDefaultSrc = avatarPreviewElement.src;
+const avatarChooserElement = adFormElement.querySelector('#avatar');
+const photoPreviewElement = adFormElement.querySelector('.ad-form__photo');
+const photoChooserElement = adFormElement.querySelector('#images');
 
 const onAvatarUpdate = () => {
-  const file = avatarChooser.files[0];
+  const file = avatarChooserElement.files[0];
   const fileName = file.name.toLowerCase();
 
   const isValidType = FILE_TYPES.some((type) => fileName.endsWith(type));
 
   if (isValidType) {
-    avatarPreview.src = URL.createObjectURL(file);
+    avatarPreviewElement.src = URL.createObjectURL(file);
   }
 };
 
@@ -22,7 +22,7 @@ const onPhotoUpdate = () => {
   const imgEl = document.createElement('img');
 
   if (imgEl) {
-    const file = photoChooser.files[0];
+    const file = photoChooserElement.files[0];
     const fileName = file.name.toLowerCase();
 
     const isValidType = FILE_TYPES.some((type) => fileName.endsWith(type));
@@ -33,19 +33,19 @@ const onPhotoUpdate = () => {
       imgEl.src = URL.createObjectURL(file);
       imgEl.alt = 'Фотография жилья';
 
-      photoPreview.innerHTML = '';
-      photoPreview.append(imgEl);
+      photoPreviewElement.innerHTML = '';
+      photoPreviewElement.append(imgEl);
     }
   }
 };
 
 const initMediaPreview = () => {
-  avatarChooser.addEventListener('change', onAvatarUpdate);
-  photoChooser.addEventListener('change', onPhotoUpdate);
+  avatarChooserElement.addEventListener('change', onAvatarUpdate);
+  photoChooserElement.addEventListener('change', onPhotoUpdate);
 };
-const resetAllPreviews =() => {
-  avatarPreview.src = avatarPreviewDefaultSrc;
-  photoPreview.innerHTML = '';
+const resetAllPreviews = () => {
+  avatarPreviewElement.src = avatarPreviewDefaultSrc;
+  photoPreviewElement.innerHTML = '';
 };
 
-export { initMediaPreview, resetAllPreviews };
+export {initMediaPreview,resetAllPreviews};

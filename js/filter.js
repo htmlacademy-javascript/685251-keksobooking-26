@@ -1,22 +1,21 @@
-import {debounce} from './util.js';
 const DEFAULT_SELECT_VALUE = 'any';
 const PricePoint = {
   MIDDLE: 10000,
   HIGH: 50000,
 };
+const filtersElement = document.querySelector('.map__filters');
+const typeFilterElement = filtersElement.querySelector('#housing-type');
+const priceFilterElement = filtersElement.querySelector('#housing-price');
+const roomsFilterElement = filtersElement.querySelector('#housing-rooms');
+const guestsFilterElement = filtersElement.querySelector('#housing-guests');
+const featuresElement = [...filtersElement.querySelectorAll('#housing-features input')];
+import {debounce} from './util.js';
 
-const filters = document.querySelector('.map__filters');
-const typeFilter = filters.querySelector('#housing-type');
-const priceFilter = filters.querySelector('#housing-price');
-const roomsFilter = filters.querySelector('#housing-rooms');
-const guestsFilter = filters.querySelector('#housing-guests');
-const features = [...filters.querySelectorAll('#housing-features input')];
-
-const filterByType = (el) => typeFilter.value === DEFAULT_SELECT_VALUE
-  || el.offer.type === typeFilter.value;
+const filterByType = (el) => typeFilterElement.value === DEFAULT_SELECT_VALUE
+  || el.offer.type === typeFilterElement.value;
 
 const filterByPrice = (el) => {
-  switch(priceFilter.value) {
+  switch(priceFilterElement.value) {
     case 'low':
       return el.offer.price < PricePoint.MIDDLE;
     case 'middle':
@@ -29,15 +28,15 @@ const filterByPrice = (el) => {
   }
 };
 
-const filterByRooms = (el) => roomsFilter.value === DEFAULT_SELECT_VALUE
-  || el.offer.rooms.toString() === roomsFilter.value;
+const filterByRooms = (el) => roomsFilterElement.value === DEFAULT_SELECT_VALUE
+  || el.offer.rooms.toString() === roomsFilterElement.value;
 
-const filterByGuests = (el) => guestsFilter.value === DEFAULT_SELECT_VALUE
-  || el.offer.guests.toString() === guestsFilter.value;
+const filterByGuests = (el) => guestsFilterElement.value === DEFAULT_SELECT_VALUE
+  || el.offer.guests.toString() === guestsFilterElement.value;
 
 const filterByFeatures = (el) => {
 
-  const selectedFeatures = features
+  const selectedFeatures = featuresElement
     .filter((elem) => elem.checked);
 
   if (!selectedFeatures || !selectedFeatures.length) {
@@ -54,7 +53,7 @@ const filterOffers = (el) =>
   && filterByFeatures(el);
 
 const initFilters = (offers, cb) => {
-  if (!filters) {
+  if (!filtersElement) {
     return;
   }
 
@@ -64,8 +63,11 @@ const initFilters = (offers, cb) => {
     cb(filteredOffers);
   };
 
-  filters.addEventListener(
-    'change',
+  filtersElement.addEventListener('change',
+    debounce(onFiltersChange(offers))
+  );
+  filtersElement.addEventListener(
+    'reset',
     debounce(onFiltersChange(offers))
   );
 };

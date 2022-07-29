@@ -1,5 +1,4 @@
-import {setData, sortFeatures, updatePhotos} from './util.js';
-const cardTemplate = document.querySelector('#card')
+const cardTemplateElement = document.querySelector('#card')
   .content
   .querySelector('.popup');
 const sliderElement = document.querySelector('#slider');
@@ -14,8 +13,10 @@ const encodedTypes = {
 const SLIDER_MIN = 0;
 const SLIDER_MAX = 100000;
 const SLIDER_STEP = 100;
-const spawnCard = function (data) {
-  const cardElement = cardTemplate.cloneNode(true);
+import {setData, sortFeatures, updatePhotos} from './util.js';
+
+const spawnCard = (data) => {
+  const cardElement = cardTemplateElement.cloneNode(true);
   const popupTitle = cardElement.querySelector('.popup__title');
   const popupTextAdress = cardElement.querySelector('.popup__text--address');
   const popupTextPrice = cardElement.querySelector('.popup__text--price');
@@ -62,4 +63,4 @@ const sliderReset = () => {
 };
 
 
-export {sliderReset,cardTemplate, spawnCard};
+export {sliderReset,cardTemplateElement, spawnCard};
